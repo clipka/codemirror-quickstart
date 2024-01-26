@@ -9,9 +9,40 @@ import { lineNumbers, highlightActiveLineGutter, highlightSpecialChars, drawSele
 import { oneDark } from "@codemirror/theme-one-dark"
 
 // Language
-import { javascriptLanguage } from "@codemirror/lang-javascript"
+import { javascriptLanguage, javascript } from "@codemirror/lang-javascript"
+import { htmlLanguage, html } from "@codemirror/lang-html"
+import { cssLanguage, css } from "@codemirror/lang-css"
 
-function createEditorState(initialContents, options = {}) {
+
+function createChangeListener(callback) {
+    return EditorView.updateListener.of(update => {
+        if (update.docChanged) {
+            const currentContent = update.state.doc.toString();
+            callback(currentContent);
+        }
+    });
+}
+
+
+function createEditorState(initialContents, language, callback, options = {}) {
+
+    let lang;
+    const changeListener = createChangeListener(callback);
+
+    switch (language) {
+        case "html":
+            lang = html();
+            break;
+        case "css":
+            lang = css();
+            break;
+        case "javascript":
+            lang = javascript();
+            break;
+        default:
+            throw Error("Language not supported");
+    }
+
     let extensions = [
         lineNumbers(),
         highlightActiveLineGutter(),
@@ -24,6 +55,7 @@ function createEditorState(initialContents, options = {}) {
         indentOnInput(),
         bracketMatching(),
         closeBrackets(),
+        lang,
         autocompletion(),
         rectangularSelection(),
         crosshairCursor(),
@@ -37,7 +69,7 @@ function createEditorState(initialContents, options = {}) {
             ...foldKeymap,
             ...completionKeymap,
         ]),
-        javascriptLanguage,
+        changeListener,
         syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
     ]
 

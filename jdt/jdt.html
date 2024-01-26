@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Junior-Dev-Team Example</title>
+    <link rel="icon" href="data:;base64,=">
+    <style>
+        .editor-container {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .editor {
+          width: 33%;
+          max-width: 33%;
+          padding: 4px;
+          margin: 4px;
+        }
+        /* Stretch editor to fit inside its containing div */
+        .cm-editor {
+            height: 100%;
+            width: 100%;
+        }
+
+        #preview-container {
+          display: flex;
+          justify-content: center;
+        }
+
+        #iframe {
+          border: 1px solid black;
+          border-radius: 10px;
+          padding: 4px;
+          width: 90%;
+          min-height: 500px;
+        }
+    </style>
+</head>
+  <body>
+    <!-- Editor goes in here -->
+    <div class="editor-container">
+      <div class="editor">
+        <h6>HTML</h6>
+        <div id="html-editor"></div>
+      </div>
+      <div class="editor">
+        <h6>CSS</h6>
+        <div id="css-editor"></div>
+      </div>
+      <div class="editor">
+        <h6>javascript</h6>
+        <div id="js-editor"></div>
+      </div>
+    </div>
+
+    <h6>Output</h6>
+    <div id="preview-container">
+      <iframe id="iframe" spellcheck="false"></iframe>
+      <p id="error-log"></p>
+    </div>
+
+    <script src="../dist/cm6.bundle.min.js"></script>
+    <script src="jdt.js"></script>
+  </body>
+</html>
